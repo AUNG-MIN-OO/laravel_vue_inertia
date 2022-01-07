@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { createInertiaApp } from '@inertiajs/inertia-vue'
+import { createInertiaApp,Link } from '@inertiajs/inertia-vue'
 
 createInertiaApp({
     resolve: name => require(`./Pages/${name}`),
@@ -9,3 +9,8 @@ createInertiaApp({
         }).$mount(el)
     },
 })
+
+
+Vue.component('inertia-link', Link)
+
+
