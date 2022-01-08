@@ -23,7 +23,7 @@ class AuthController extends Controller
 
         $credential = $request->only('email','password');
         if (Auth::attempt($credential)){
-            return redirect()->route('home');
+            return redirect()->route('home')->with('success','Welcome '.Auth::user()->name);
         }
     }
 
