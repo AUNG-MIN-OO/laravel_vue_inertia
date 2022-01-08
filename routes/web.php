@@ -7,12 +7,14 @@ use App\Http\Controllers\QuestionController;
 
 Route::group(['middleware'=>'auth'],function (){
     Route::get('/logout',[AuthController::class,'logout'])->name('logout');
-    Route::get('/',[PageController::class,'home'])->name('home');
+    Route::get('/',[QuestionController::class,'home'])->name('home');
     ##edit profile
     Route::get('/edit-profile',[PageController::class,'editProfile'])->name('profile.edit');
     Route::post('/edit-profile',[PageController::class,'postEditProfile'])->name('profile.post.edit');
     ##view detail question
     Route::get('question-detail',[QuestionController::class,'questionDetail'])->name('question.detail');
+    Route::get('question/like/{id}',[QuestionController::class,'like'])->name('question.like');
+
 });
 
 Route::group(['middleware'=>'NotLogin'],function (){

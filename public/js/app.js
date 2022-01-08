@@ -2358,7 +2358,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Layout_Master__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Layout/Master */ "./resources/js/Pages/Layout/Master.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Layout_Master__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Layout/Master */ "./resources/js/Pages/Layout/Master.vue");
+//
 //
 //
 //
@@ -2420,14 +2423,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Home",
   components: {
-    Master: _Layout_Master__WEBPACK_IMPORTED_MODULE_0__["default"]
+    Master: _Layout_Master__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      questions: ""
+    };
   },
   created: function created() {
+    this.questions = this.$page.props.questions;
+
     if (this.$page.props.flash.success) {
       this.$toastr.s('success', this.$page.props.flash.success);
+    }
+  },
+  methods: {
+    like: function like(id, index) {
+      this.questions[index].is_like = "true";
+      this.questions[index].like_count++;
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/question/like/".concat(id)).then(function (res) {
+        if (res.data.success == true) {}
+      });
     }
   }
 });
@@ -10955,7 +10975,7 @@ var render = function () {
           ]),
         ]),
         _vm._v(" "),
-        _vm._l(_vm.$page.props.questions, function (question) {
+        _vm._l(_vm.$page.props.questions, function (question, index) {
           return _c("div", { key: question.id, staticClass: "card mb-3" }, [
             _c("div", { staticClass: "card-header" }, [
               _c(
@@ -11016,9 +11036,37 @@ var render = function () {
                 _c("div", { staticClass: "col-md-4" }, [
                   _c("div", { staticClass: "d-flex justify-content-between" }, [
                     _c("div", {}, [
-                      _c("i", { staticClass: "fas fa-heart text-danger" }),
+                      _c("i", {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: question.is_like == "false",
+                            expression: "question.is_like == 'false'",
+                          },
+                        ],
+                        staticClass: "far fa-heart",
+                        staticStyle: { cursor: "pointer" },
+                        on: {
+                          click: function ($event) {
+                            return _vm.like(question.id, index)
+                          },
+                        },
+                      }),
                       _vm._v(" "),
-                      _c("small", [_vm._v(_vm._s(question.like.length))]),
+                      _c("i", {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: question.is_like == "true",
+                            expression: "question.is_like == 'true'",
+                          },
+                        ],
+                        staticClass: "fas fa-heart text-danger",
+                      }),
+                      _vm._v(" "),
+                      _c("small", [_vm._v(_vm._s(question.like_count))]),
                     ]),
                     _vm._v(" "),
                     _c("div", {}, [

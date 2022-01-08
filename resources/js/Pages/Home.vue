@@ -9,7 +9,7 @@
                             <i class="fas fa-arrow-up"></i>
                         </div>
                     </span>
-            <div class="card mb-3" v-for="question in $page.props.questions" :key="question.id">
+            <div class="card mb-3" v-for="(question,index) in $page.props.questions" :key="question.id">
                 <div class="card-header">
                     <span class="font-weight-bolder text-capitalize badge badge-danger">!need fixed</span>
                     <span class="">{{ question.title }}</span>
@@ -32,8 +32,9 @@
                         <div class="col-md-4">
                             <div class="d-flex justify-content-between">
                                 <div class="">
-                                    <i class="fas fa-heart text-danger"></i>
-                                    <small>{{ question.like.length }}</small>
+                                    <i class="far fa-heart" v-show="question.is_like == 'false'" style="cursor: pointer" @click="like(question.id,index)"></i>
+                                    <i class="fas fa-heart text-danger" v-show="question.is_like == 'true'"></i>
+                                    <small>{{ question.like_count }}</small>
                                 </div>
                                 <div class="">
                                     <i class="fas fa-comment text-primary"></i>
@@ -59,16 +60,33 @@
 </template>
 
 <script>
-
+import axios from  "axios";
 import Master from "./Layout/Master";
 export default {
     name: "Home",
     components: {Master},
+    data() {
+        return {
+            questions: ""
+        }
+    },
     created() {
+        this.questions = this.$page.props.questions;
         if (this.$page.props.flash.success){
             this.$toastr.s('success',this.$page.props.flash.success)
         }
-    }
+    },
+    methods: {
+        like(id,index) {
+            this.questions[index].is_like = "true";
+            this.questions[index].like_count++;
+            axios.get(`/question/like/${id}`)
+            .then(res=>{
+                if (res.data.success == true){
+                }
+            })
+        }
+    },
 }
 </script>
 
