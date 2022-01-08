@@ -11,10 +11,11 @@
                     </span>
             <div class="card mb-3" v-for="(question,index) in $page.props.questions" :key="question.id">
                 <div class="card-header">
-                    <span class="font-weight-bolder text-capitalize badge badge-danger">!need fixed</span>
+                    <span class="font-weight-bolder text-capitalize badge badge-danger" v-if="question.is_fixed">need fixed!</span>
+                    <span class="font-weight-bolder text-capitalize badge badge-success" v-else>fixed!</span>
                     <span class="">{{ question.title }}</span>
                     <a href="" class="badge badge-danger p-1 float-right"><i class="fas fa-trash-alt"></i></a>
-                    <a href="" class="badge badge-success p-1 float-right mr-2"><i class="fas fa-check"></i></a>
+                    <a href="" class="badge badge-success p-1 float-right mr-2"  v-show="isOwn(question.user_id)"><i class="fas fa-check"></i></a>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -48,7 +49,11 @@
                         <!--                            like box-->
                         <div class="col-md-8">
                             <div class="">
-                                <inertia-link href="/question-detail" class="float-right text-primary">Read More...</inertia-link>
+                                <inertia-link
+                                    :href="route('question.detail',{slug : question.slug})"
+                                    class="float-right text-primary">
+                                    Read More...
+                                </inertia-link>
                             </div>
                         </div>
 
@@ -85,6 +90,15 @@ export default {
                 if (res.data.success == true){
                 }
             })
+        },
+
+        isOwn(id){
+            var auth_user_id = this.$page.props.auth_user.id;
+            if (auth_user_id === id){
+                return true;
+            }else{
+                return  false;
+            }
         }
     },
 }

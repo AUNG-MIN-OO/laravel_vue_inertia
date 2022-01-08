@@ -5,6 +5,7 @@ import { InertiaProgress } from '@inertiajs/progress'
 import {Inertia} from "@inertiajs/inertia";
 
 Vue.use(Toastr)
+Vue.mixin({methods: {route:window.route}})
 
 createInertiaApp({
     resolve: name => require(`./Pages/${name}`),

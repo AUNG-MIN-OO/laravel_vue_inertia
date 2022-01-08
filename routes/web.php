@@ -12,7 +12,7 @@ Route::group(['middleware'=>'auth'],function (){
     Route::get('/edit-profile',[PageController::class,'editProfile'])->name('profile.edit');
     Route::post('/edit-profile',[PageController::class,'postEditProfile'])->name('profile.post.edit');
     ##view detail question
-    Route::get('question-detail',[QuestionController::class,'questionDetail'])->name('question.detail');
+    Route::get('question/detail/{slug}',[QuestionController::class,'questionDetail'])->name('question.detail');
     Route::get('question/like/{id}',[QuestionController::class,'like'])->name('question.like');
 
 });

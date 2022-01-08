@@ -2422,6 +2422,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2448,6 +2453,15 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_0___default().get("/question/like/".concat(id)).then(function (res) {
         if (res.data.success == true) {}
       });
+    },
+    isOwn: function isOwn(id) {
+      var auth_user_id = this.$page.props.auth_user.id;
+
+      if (auth_user_id === id) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 });
@@ -2702,12 +2716,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "QuestionDetail",
+  props: {
+    question: Object
+  },
   components: {
     Master: _Layout_Master__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      q: ""
+    };
+  },
+  created: function created() {
+    this.q = this.question;
+  },
+  methods: {
+    isOwn: function isOwn(id) {
+      var auth_user_id = this.$page.props.auth_user.id;
+
+      if (auth_user_id === id) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 });
 
@@ -2732,6 +2767,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(vue_toastr__WEBPACK_IMPORTED_MODULE_1__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_4__["default"].mixin({
+  methods: {
+    route: window.route
+  }
+});
 (0,_inertiajs_inertia_vue__WEBPACK_IMPORTED_MODULE_0__.createInertiaApp)({
   resolve: function resolve(name) {
     return __webpack_require__("./resources/js/Pages sync recursive ^\\.\\/.*$")("./".concat(name));
@@ -10978,14 +11018,23 @@ var render = function () {
         _vm._l(_vm.$page.props.questions, function (question, index) {
           return _c("div", { key: question.id, staticClass: "card mb-3" }, [
             _c("div", { staticClass: "card-header" }, [
-              _c(
-                "span",
-                {
-                  staticClass:
-                    "font-weight-bolder text-capitalize badge badge-danger",
-                },
-                [_vm._v("!need fixed")]
-              ),
+              question.is_fixed
+                ? _c(
+                    "span",
+                    {
+                      staticClass:
+                        "font-weight-bolder text-capitalize badge badge-danger",
+                    },
+                    [_vm._v("need fixed!")]
+                  )
+                : _c(
+                    "span",
+                    {
+                      staticClass:
+                        "font-weight-bolder text-capitalize badge badge-success",
+                    },
+                    [_vm._v("fixed!")]
+                  ),
               _vm._v(" "),
               _c("span", {}, [_vm._v(_vm._s(question.title))]),
               _vm._v(" "),
@@ -11001,6 +11050,14 @@ var render = function () {
               _c(
                 "a",
                 {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.isOwn(question.user_id),
+                      expression: "isOwn(question.user_id)",
+                    },
+                  ],
                   staticClass: "badge badge-success p-1 float-right mr-2",
                   attrs: { href: "" },
                 },
@@ -11092,9 +11149,17 @@ var render = function () {
                         "inertia-link",
                         {
                           staticClass: "float-right text-primary",
-                          attrs: { href: "/question-detail" },
+                          attrs: {
+                            href: _vm.route("question.detail", {
+                              slug: question.slug,
+                            }),
+                          },
                         },
-                        [_vm._v("Read More...")]
+                        [
+                          _vm._v(
+                            "\n                                Read More...\n                            "
+                          ),
+                        ]
                       ),
                     ],
                     1
@@ -11445,16 +11510,25 @@ var render = function () {
   return _c("Master", [
     _c("div", { staticClass: "card" }, [
       _c("div", { staticClass: "card-header" }, [
-        _c(
-          "span",
-          {
-            staticClass:
-              "font-weight-bolder text-capitalize badge badge-danger",
-          },
-          [_vm._v("!need fixed")]
-        ),
+        _vm.q.is_fixed
+          ? _c(
+              "span",
+              {
+                staticClass:
+                  "font-weight-bolder text-capitalize badge badge-danger",
+              },
+              [_vm._v("need fixed!")]
+            )
+          : _c(
+              "span",
+              {
+                staticClass:
+                  "font-weight-bolder text-capitalize badge badge-success",
+              },
+              [_vm._v("fixed!")]
+            ),
         _vm._v(" "),
-        _c("span", {}, [_vm._v("What is HTML?")]),
+        _c("span", {}, [_vm._v(_vm._s(_vm.q.title))]),
         _vm._v(" "),
         _c(
           "a",
@@ -11468,6 +11542,14 @@ var render = function () {
         _c(
           "a",
           {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.isOwn(_vm.q.user_id),
+                expression: "isOwn(q.user_id)",
+              },
+            ],
             staticClass: "badge badge-success p-1 float-right mr-2",
             attrs: { href: "" },
           },
@@ -11475,90 +11557,90 @@ var render = function () {
         ),
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-12" }, [
-            _c("div", { staticClass: "mb-3" }, [
-              _c(
-                "span",
-                { staticClass: "badge badge-pill badge-primary py-1 px-2" },
-                [_vm._v("Frontend Development")]
-              ),
-              _vm._v(" "),
-              _c(
-                "span",
-                { staticClass: "badge badge-pill badge-primary py-1 px-2" },
-                [_vm._v("Android Development")]
-              ),
-            ]),
-            _vm._v(" "),
-            _c("p", [
-              _vm._v(
-                "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur at dolorem fugiat fugit, impedit, incidunt laborum nihil quae quaerat quam quo quod quos, sed sint ut voluptate voluptatem! Dolorum, voluptatem!"
-              ),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-4" }, [
-            _c("div", { staticClass: "d-flex justify-content-between" }, [
-              _c("div", {}, [
-                _c("i", { staticClass: "fas fa-heart text-danger" }),
+      _c(
+        "div",
+        { staticClass: "card-body" },
+        [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-12" }, [
+              _c("div", { staticClass: "mb-3" }, [
+                _c(
+                  "span",
+                  { staticClass: "badge badge-pill badge-primary py-1 px-2" },
+                  [_vm._v("Frontend Development")]
+                ),
                 _vm._v(" "),
-                _c("small", [_vm._v("4")]),
-              ]),
-              _vm._v(" "),
-              _c("div", {}, [
-                _c("i", { staticClass: "fas fa-comment text-primary" }),
-                _vm._v(" "),
-                _c("small", [_vm._v("11")]),
-              ]),
-              _vm._v(" "),
-              _c("div", {}, [
-                _c("i", { staticClass: "fas fa-save text-success" }),
-                _vm._v(" "),
-                _c("small", [_vm._v("5")]),
-              ]),
-            ]),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("hr"),
-        _vm._v(" "),
-        _c("h6", { staticClass: "mb-3" }, [_vm._v("All Comments")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row mb-4" }, [
-          _c("div", { staticClass: "col-1" }, [
-            _c("img", {
-              staticClass: "rounded-circle",
-              staticStyle: { width: "50px", height: "50px" },
-              attrs: {
-                src: "https://mdbootstrap.com/img/Photos/Avatars/img%20(26).jpg",
-                alt: "",
-              },
-            }),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-11" }, [
-            _c("div", { staticClass: "ml-2 bg-light px-2 rounded" }, [
-              _c("p", { staticClass: "mb-2" }, [
-                _c("strong", [_vm._v("Antonia Velez")]),
-                _vm._v(" "),
-                _c("small", { staticClass: "text-muted" }, [
-                  _vm._v("1 min ago"),
-                ]),
-              ]),
-              _vm._v(" "),
-              _c("p", [
-                _vm._v(
-                  "\n                            Lorem ipsum dolor sit amet consectetur adipisicing elit.\n                            Distinctio est ab iure inventore dolorum consectetur?\n                        "
+                _c(
+                  "span",
+                  { staticClass: "badge badge-pill badge-primary py-1 px-2" },
+                  [_vm._v("Android Development")]
                 ),
               ]),
+              _vm._v(" "),
+              _c("p", [_vm._v(_vm._s(_vm.q.description))]),
             ]),
           ]),
-        ]),
-      ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-4" }, [
+              _c("div", { staticClass: "d-flex justify-content-between" }, [
+                _c("div", {}, [
+                  _c("i", { staticClass: "fas fa-heart text-danger" }),
+                  _vm._v(" "),
+                  _c("small", [_vm._v(_vm._s(_vm.q.like_count))]),
+                ]),
+                _vm._v(" "),
+                _c("div", {}, [
+                  _c("i", { staticClass: "fas fa-comment text-primary" }),
+                  _vm._v(" "),
+                  _c("small", [_vm._v(_vm._s(_vm.q.comment.length))]),
+                ]),
+                _vm._v(" "),
+                _c("div", {}, [
+                  _c("i", { staticClass: "fas fa-save text-success mt-1" }),
+                ]),
+              ]),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c("h6", { staticClass: "mb-3" }, [_vm._v("All Comments")]),
+          _vm._v(" "),
+          _vm._l(_vm.q.comment, function (c) {
+            return _c("div", { key: c.id, staticClass: "row mb-4" }, [
+              _c("div", { staticClass: "col-1" }, [
+                _c("img", {
+                  staticClass: "rounded-circle",
+                  staticStyle: { width: "50px", height: "50px" },
+                  attrs: { src: c.user.image, alt: "" },
+                }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-11" }, [
+                _c("div", { staticClass: "ml-2 bg-light px-2 rounded" }, [
+                  _c("p", { staticClass: "mb-2" }, [
+                    _c("strong", [_vm._v(_vm._s(c.user.name))]),
+                    _vm._v(" "),
+                    _c("small", { staticClass: "text-muted" }, [
+                      _vm._v(_vm._s(c.date)),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(c.comment) +
+                        "\n                        "
+                    ),
+                  ]),
+                ]),
+              ]),
+            ])
+          }),
+        ],
+        2
+      ),
     ]),
   ])
 }
