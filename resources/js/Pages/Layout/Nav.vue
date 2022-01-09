@@ -56,7 +56,7 @@
                                 <a class="nav-link dropdown-toggle btn btn-primary text-white" id="navbarDropdownMenuLink" data-toggle="dropdown"
                                    aria-haspopup="true" aria-expanded="false">{{$page.props.auth_user.name}}</a>
                                 <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                                    <inertia-link class="nav-link" href="/edit-profile">Edit Profile</inertia-link>
+                                    <inertia-link class="nav-link" href="/profile/edit">Edit Profile</inertia-link>
                                     <inertia-link class="dropdown-item" href="/logout">Logout</inertia-link>
                                 </div>
                             </li>

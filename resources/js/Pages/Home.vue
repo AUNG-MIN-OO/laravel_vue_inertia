@@ -88,6 +88,7 @@ export default {
             axios.get(`/question/like/${id}`)
             .then(res=>{
                 if (res.data.success == true){
+                    this.$toastr.s('success','like success')
                 }
             })
         },

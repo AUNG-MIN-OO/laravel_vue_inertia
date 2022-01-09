@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Question;
 use App\Models\QuestionComment;
 use App\Models\QuestionLike;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -22,11 +23,25 @@ class QuestionController extends Controller
         return Inertia::render('Home',['questions'=>$questions]);
     }
 
+    public function showQuestion(){
+        return Inertia::render('CreateQuestion');
+    }
+
+    public function storeQuestion(Request $request){
+        return $request;
+    }
+
     public function questionDetail($slug){
         $question = Question::where('slug',$slug)->with('comment.user','like','questionTag')->first();
         $question->is_like = $this->getLikeDetails($question->id)['is_like'];
         $question->like_count = $this->getLikeDetails($question->id)['like_count'];
         return Inertia::render('QuestionDetail',['question'=>$question]);
+    }
+
+    public function userQuestion(){
+        $user = User::findOrFail(Auth::user()->id);
+        $question = $user->question;
+        return Inertia::render('UserQuestion',['questions'=>$question]);
     }
 
     ##like

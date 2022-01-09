@@ -112,6 +112,7 @@ export default {
                 const {success,comment} = res.data;
                 if (success){
                     this.q.comment.push(comment);
+                    this.$toastr.s('success','comment success')
                 }
             })
         }
