@@ -41,6 +41,22 @@
                 </div>
                 <hr>
                 <h6 class="mb-3">All Comments</h6>
+<!--                create comment-->
+                <form @submit.prevent="createComment(q.id)">
+                    <div class="row justify-content-center align-items-center mb-3">
+                        <div class="col-1 ">
+                            <img :src="$page.props.auth_user.image"
+                                 class="rounded-circle" style="width: 50px;height: 50px;" alt="" />
+                        </div>
+                        <div class="col-9">
+                            <textarea name="typeComment" id="typeComment" v-model="typeComment" class="w-100 rounded bg-light border-0 ml-2"></textarea>
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-light d-flex align-items-center justify-content-center" style="cursor: pointer"><i class="fab fa-telegram-plane fa-2x"></i></button>
+                        </div>
+                    </div>
+                </form>
+                <!--            end    create comment-->
                 <div class="row mb-4" v-for="c in q.comment" :key="c.id">
                     <div class="col-1">
                         <img :src="c.user.image"
@@ -63,13 +79,15 @@
 
 <script>
 import Master from "./Layout/Master";
+import axios from "axios";
 export default {
     name: "QuestionDetail",
     props:{question:Object},
     components: {Master},
     data() {
         return {
-            q: ""
+            q: "",
+            typeComment: "",
         }
     },
     created() {
@@ -83,6 +101,19 @@ export default {
             }else{
                 return  false;
             }
+        },
+
+        createComment(id){
+            var data = new FormData();
+            data.append('question_id',id);
+            data.append('comment',this.typeComment);
+            axios.post('/question/comment/create',data)
+            .then(res=>{
+                const {success,comment} = res.data;
+                if (success){
+                    this.q.comment.push(comment);
+                }
+            })
         }
     },
 }

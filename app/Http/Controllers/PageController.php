@@ -32,9 +32,9 @@ class PageController extends Controller
         #check image
         if ($file = $request->file('image')){
             $new_image_name = uniqid().$request->file('image')->getClientOriginalName();
-            $path = "images/profile/";
+            $path = "/images/profile/";
             File::delete(public_path($user->image));
-            $file->move($path,$new_image_name);
+            $file->move(public_path('images/profile/'),$new_image_name);
             $save_image_name_to_db = $path.$new_image_name;
         }else{
             $save_image_name_to_db = $user->image;

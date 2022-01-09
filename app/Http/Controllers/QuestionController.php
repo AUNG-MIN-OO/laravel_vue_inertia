@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Question;
+use App\Models\QuestionComment;
 use App\Models\QuestionLike;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,5 +36,21 @@ class QuestionController extends Controller
             'question_id' => $id,
         ]);
         return response()->json(['success'=>true]);
+    }
+
+    ##create comment
+    public function createComment(Request $request){
+        $q_id = $request->question_id;
+        $comment = $request->comment;
+
+        $cmt = QuestionComment::create([
+            'question_id' => $q_id,
+            'comment' => $comment,
+            'user_id' => Auth::user()->id,
+        ]);
+
+        $createdComment = QuestionComment::where('id',$cmt->id)->with('user')->first();
+
+        return ['success'=>true, 'comment'=>$createdComment];
     }
 }

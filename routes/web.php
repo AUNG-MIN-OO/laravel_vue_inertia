@@ -15,6 +15,9 @@ Route::group(['middleware'=>'auth'],function (){
     Route::get('question/detail/{slug}',[QuestionController::class,'questionDetail'])->name('question.detail');
     Route::get('question/like/{id}',[QuestionController::class,'like'])->name('question.like');
 
+    ##comment
+    Route::post('question/comment/create',[QuestionController::class,'createComment'])->name('comment.create');
+
 });
 
 Route::group(['middleware'=>'NotLogin'],function (){

@@ -2653,6 +2653,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Layout_Master__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Layout/Master */ "./resources/js/Pages/Layout/Master.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2717,6 +2735,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "QuestionDetail",
   props: {
@@ -2727,7 +2746,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      q: ""
+      q: "",
+      typeComment: ""
     };
   },
   created: function created() {
@@ -2742,6 +2762,22 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         return false;
       }
+    },
+    createComment: function createComment(id) {
+      var _this = this;
+
+      var data = new FormData();
+      data.append('question_id', id);
+      data.append('comment', this.typeComment);
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/question/comment/create', data).then(function (res) {
+        var _res$data = res.data,
+            success = _res$data.success,
+            comment = _res$data.comment;
+
+        if (success) {
+          _this.q.comment.push(comment);
+        }
+      });
     }
   }
 });
@@ -11607,6 +11643,72 @@ var render = function () {
           _vm._v(" "),
           _c("h6", { staticClass: "mb-3" }, [_vm._v("All Comments")]),
           _vm._v(" "),
+          _c(
+            "form",
+            {
+              on: {
+                submit: function ($event) {
+                  $event.preventDefault()
+                  return _vm.createComment(_vm.q.id)
+                },
+              },
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "row justify-content-center align-items-center mb-3",
+                },
+                [
+                  _c("div", { staticClass: "col-1 " }, [
+                    _c("img", {
+                      staticClass: "rounded-circle",
+                      staticStyle: { width: "50px", height: "50px" },
+                      attrs: { src: _vm.$page.props.auth_user.image, alt: "" },
+                    }),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-9" }, [
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.typeComment,
+                          expression: "typeComment",
+                        },
+                      ],
+                      staticClass: "w-100 rounded bg-light border-0 ml-2",
+                      attrs: { name: "typeComment", id: "typeComment" },
+                      domProps: { value: _vm.typeComment },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.typeComment = $event.target.value
+                        },
+                      },
+                    }),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-2" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "btn btn-light d-flex align-items-center justify-content-center",
+                        staticStyle: { cursor: "pointer" },
+                      },
+                      [_c("i", { staticClass: "fab fa-telegram-plane fa-2x" })]
+                    ),
+                  ]),
+                ]
+              ),
+            ]
+          ),
+          _vm._v(" "),
           _vm._l(_vm.q.comment, function (c) {
             return _c("div", { key: c.id, staticClass: "row mb-4" }, [
               _c("div", { staticClass: "col-1" }, [
@@ -11629,9 +11731,9 @@ var render = function () {
                   _vm._v(" "),
                   _c("p", [
                     _vm._v(
-                      "\n                            " +
+                      "\n                                " +
                         _vm._s(c.comment) +
-                        "\n                        "
+                        "\n                            "
                     ),
                   ]),
                 ]),
