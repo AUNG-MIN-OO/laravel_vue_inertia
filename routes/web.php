@@ -11,6 +11,8 @@ Route::group(['middleware'=>'auth'],function (){
     ##edit profile
     Route::get('/profile/edit',[PageController::class,'editProfile'])->name('profile.edit');
     Route::post('/edit-profile',[PageController::class,'postEditProfile'])->name('profile.post.edit');
+    Route::get('profile/question/user',[QuestionController::class,'userQuestion'])->name('question.user');
+
     ##view detail question
     Route::get('question/detail/{slug}',[QuestionController::class,'questionDetail'])->name('question.detail');
     Route::get('question/like/{id}',[QuestionController::class,'like'])->name('question.like');
@@ -18,7 +20,7 @@ Route::group(['middleware'=>'auth'],function (){
     ##create question
     Route::get('question/create',[QuestionController::class,'showQuestion'])->name('question.show');
     Route::post('question/create',[QuestionController::class,'storeQuestion'])->name('question.store');
-    Route::get('profile/question/user',[QuestionController::class,'userQuestion'])->name('question.user');
+    Route::get('question/delete/{id}',[QuestionController::class,'deleteQuestion'])->name('question.delete');
 
     ##comment
     Route::post('question/comment/create',[QuestionController::class,'createComment'])->name('comment.create');

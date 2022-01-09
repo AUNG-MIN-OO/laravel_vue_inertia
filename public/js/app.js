@@ -2906,6 +2906,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Layout_Master__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Layout/Master */ "./resources/js/Pages/Layout/Master.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -2917,6 +2919,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "UserQuestion",
@@ -2930,6 +2933,22 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.questions = this.$page.props.questions;
+  },
+  methods: {
+    deleteQuestion: function deleteQuestion(index, q_id) {
+      var _this = this;
+
+      var question_id = {
+        id: q_id
+      };
+      axios__WEBPACK_IMPORTED_MODULE_1___default().get(this.route('question.delete', question_id)).then(function (res) {
+        if (res.data.success) {
+          _this.questions.splice(index, 1);
+
+          _this.$toastr.s('success', "Question is deleted!");
+        }
+      });
+    }
   }
 });
 
@@ -12309,11 +12328,18 @@ var render = function () {
     _c(
       "div",
       { staticClass: "card" },
-      _vm._l(_vm.questions, function (q) {
+      _vm._l(_vm.questions, function (q, index) {
         return _c("div", { key: q.id, staticClass: "card-body" }, [
           _c("span", [_vm._v(_vm._s(q.title))]),
           _vm._v(" "),
-          _c("i", { staticClass: "fas fa-trash-alt text-danger float-right" }),
+          _c("i", {
+            staticClass: "fas fa-trash-alt text-danger float-right",
+            on: {
+              click: function ($event) {
+                return _vm.deleteQuestion(index, q.id)
+              },
+            },
+          }),
         ])
       }),
       0
