@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\QuestionLike;
+use App\Models\QuestionTag;
 use Illuminate\Support\Facades\Auth;
 
 trait Questions

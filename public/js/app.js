@@ -2258,6 +2258,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Layout_Master__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Layout/Master */ "./resources/js/Pages/Layout/Master.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -2286,6 +2288,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "CreateQuestion",
   components: {
@@ -2294,8 +2297,28 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       title: "",
-      description: ""
+      description: "",
+      tags: []
     };
+  },
+  methods: {
+    createQuestion: function createQuestion() {
+      var _this = this;
+
+      var data = new FormData();
+      data.append('title', this.title);
+      data.append('description', this.description);
+      data.append('tags', this.tags);
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/question/create', data).then(function (res) {
+        var _res$data = res.data,
+            success = _res$data.success,
+            question = _res$data.question;
+
+        if (success) {
+          _this.$toastr.s('success', 'Question is created');
+        }
+      });
+    }
   }
 });
 
@@ -11119,20 +11142,62 @@ var render = function () {
         _c("div", { staticClass: "card-body" }, [
           _c(
             "form",
+            {
+              on: {
+                submit: function ($event) {
+                  $event.preventDefault()
+                  return _vm.createQuestion.apply(null, arguments)
+                },
+              },
+            },
             [
               _c("div", { staticClass: "md-form" }, [
                 _c("label", { attrs: { for: "title" } }, [_vm._v("Title")]),
                 _vm._v(" "),
                 _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.title,
+                      expression: "title",
+                    },
+                  ],
                   staticClass: "form-control",
                   attrs: { type: "text", id: "title" },
+                  domProps: { value: _vm.title },
+                  on: {
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.title = $event.target.value
+                    },
+                  },
                 }),
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "md-form" }, [
                 _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.description,
+                      expression: "description",
+                    },
+                  ],
                   staticClass: "md-textarea form-control",
                   attrs: { id: "question_desc", rows: "3" },
+                  domProps: { value: _vm.description },
+                  on: {
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.description = $event.target.value
+                    },
+                  },
                 }),
                 _vm._v(" "),
                 _c("label", { attrs: { for: "question_desc" } }, [
@@ -11149,9 +11214,43 @@ var render = function () {
                   },
                   [
                     _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.tags,
+                          expression: "tags",
+                        },
+                      ],
                       staticClass: "custom-control-input",
                       attrs: { type: "checkbox", id: tag.id },
-                      domProps: { value: tag.id },
+                      domProps: {
+                        value: tag.id,
+                        checked: Array.isArray(_vm.tags)
+                          ? _vm._i(_vm.tags, tag.id) > -1
+                          : _vm.tags,
+                      },
+                      on: {
+                        change: function ($event) {
+                          var $$a = _vm.tags,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = tag.id,
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.tags = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.tags = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.tags = $$c
+                          }
+                        },
+                      },
                     }),
                     _vm._v(" "),
                     _c(

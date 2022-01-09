@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Question;
 use App\Models\QuestionComment;
 use App\Models\QuestionLike;
+use App\Models\QuestionTag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use App\Traits\Questions as QuestionTraits;
 
@@ -28,7 +30,37 @@ class QuestionController extends Controller
     }
 
     public function storeQuestion(Request $request){
-        return $request;
+//        $a=array();
+//        for($i=0; $i<strlen($request->tags); $i++)
+//            $a[$i] = $request->tags[$i];
+//        foreach ($a as $b){
+//            if ($b != ','){
+//                return true;
+//            }
+//        }
+//        die();
+
+        $question = Question::create([
+            'user_id' => Auth::user()->id,
+            'title'=>$request->title,
+            'description'=>$request->description,
+            'slug' => Str::slug($request->title)
+        ]);
+        $a=array();
+        for($i=0; $i<strlen($request->tags); $i++)
+            $a[$i] = $request->tags[$i];
+        foreach ($a as $e){
+            if ($e != ','){
+                QuestionTag::create([
+                    'question_id' => $question->id,
+                    'tag_id' => $e,
+                ]);
+            }
+        }
+
+        $created_question = Question::where('id',$question->id)->with('questionTag')->get();
+
+        return ['success'=>true,'question',$created_question];
     }
 
     public function questionDetail($slug){
