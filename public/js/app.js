@@ -2542,6 +2542,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2594,6 +2597,20 @@ __webpack_require__.r(__webpack_exports__);
           _this2.questions[index].is_fixed = 'true';
 
           _this2.$toastr.s('success', "Question si fixed!");
+        }
+      });
+    },
+    //delete question
+    deleteQuestion: function deleteQuestion(index, q_id) {
+      var _this3 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get(this.route('question.delete', q_id)).then(function (res) {
+        if (res.data.success) {
+          _this3.questions.splice(index, 1);
+
+          _this3.$toastr.s('success', 'Question is deleted');
+
+          window.location.reload();
         }
       });
     }
@@ -11735,10 +11752,14 @@ var render = function () {
               _c("span", {}, [_vm._v(_vm._s(question.title))]),
               _vm._v(" "),
               _c(
-                "a",
+                "span",
                 {
                   staticClass: "badge badge-danger p-1 float-right",
-                  attrs: { href: "" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.deleteQuestion(index, question.id)
+                    },
+                  },
                 },
                 [_c("i", { staticClass: "fas fa-trash-alt" })]
               ),
@@ -11981,9 +12002,37 @@ var render = function () {
                 _vm._v(" "),
                 _vm._m(2),
                 _vm._v(" "),
-                _vm._m(3),
+                _c(
+                  "li",
+                  { staticClass: "nav-item" },
+                  [
+                    _c(
+                      "inertia-link",
+                      {
+                        staticClass: "nav-link",
+                        attrs: { href: "/?type=answer" },
+                      },
+                      [_vm._v("Answered Questions")]
+                    ),
+                  ],
+                  1
+                ),
                 _vm._v(" "),
-                _vm._m(4),
+                _c(
+                  "li",
+                  { staticClass: "nav-item" },
+                  [
+                    _c(
+                      "inertia-link",
+                      {
+                        staticClass: "nav-link",
+                        attrs: { href: "/?type=unanswered" },
+                      },
+                      [_vm._v("Unanswered Questions")]
+                    ),
+                  ],
+                  1
+                ),
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "d-flex align-items-center" }, [
@@ -12000,7 +12049,7 @@ var render = function () {
                   ]
                 ),
                 _vm._v(" "),
-                _vm._m(5),
+                _vm._m(3),
                 _vm._v(" "),
                 _c("ul", { staticClass: "navbar-nav me-auto mb-2 mb-lg-0" }, [
                   _c("li", { staticClass: "nav-item dropdown" }, [
@@ -12096,26 +12145,6 @@ var staticRenderFns = [
     return _c("li", { staticClass: "nav-item" }, [
       _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
         _vm._v("All Questions"),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "nav-item" }, [
-      _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-        _vm._v("Answered Questions"),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "nav-item" }, [
-      _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
-        _vm._v("Unanswered Questions"),
       ]),
     ])
   },

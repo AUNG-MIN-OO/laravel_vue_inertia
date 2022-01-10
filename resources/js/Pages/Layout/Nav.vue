@@ -32,10 +32,10 @@
                             <a class="nav-link" href="#">All Questions</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Answered Questions</a>
+                            <inertia-link class="nav-link" href="/?type=answer">Answered Questions</inertia-link>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Unanswered Questions</a>
+                            <inertia-link class="nav-link" href="/?type=unanswered">Unanswered Questions</inertia-link>
                         </li>
                     </ul>
                     <!-- Left links -->

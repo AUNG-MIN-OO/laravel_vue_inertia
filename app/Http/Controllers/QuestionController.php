@@ -8,6 +8,7 @@ use App\Models\QuestionLike;
 use App\Models\QuestionTag;
 use App\Models\Tag;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -20,6 +21,16 @@ class QuestionController extends Controller
     public function home(Request $request){
         if ($slug = $request->tag){
             $questions = Tag::where('slug',$slug)->first()->question()->with('comment','questionTag','questionSave')->orderBy('id','DESC')->paginate(2);
+        }elseif  ($type = $request->type){
+            if  ($type == "answer"){
+                $questions = Question::whereHas('comment',function (Builder $q){
+                    $q->where('user_id',Auth::user()->id);
+                })->with('comment','questiontag','questionsave')->paginate(2);
+            }
+
+            if  ($type == "unanswered"){
+                $questions = Question::has('comment','<',1)->with('comment','questiontag','questionsave')->paginate(2);
+            }
         }else{
             $questions = Question::with('comment','questionTag','questionSave')->orderBy('id','DESC')->paginate(2);
         }

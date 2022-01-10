@@ -14,7 +14,10 @@
                     <span class="font-weight-bolder text-capitalize badge badge-danger" v-if="question.is_fixed == 'false'">need fixed!</span>
                     <span class="font-weight-bolder text-capitalize badge badge-success" v-else>fixed!</span>
                     <span class="">{{ question.title }}</span>
-                    <a href="" class="badge badge-danger p-1 float-right"><i class="fas fa-trash-alt"></i></a>
+                    <span class="badge badge-danger p-1 float-right"
+                          @click="deleteQuestion(index, question.id)">
+                        <i class="fas fa-trash-alt"></i>
+                    </span>
                     <span @click="setFixed(index,question.id)"
                           class="badge badge-success p-1 float-right mr-2"
                           v-show="isOwn(question.user_id) && question.is_fixed == 'false'">
@@ -116,6 +119,18 @@ export default {
                 if (res.data.success){
                     this.questions[index].is_fixed = 'true'
                     this.$toastr.s('success',"Question si fixed!")
+                }
+            })
+        },
+
+        //delete question
+        deleteQuestion(index,q_id){
+            axios.get(this.route('question.delete',q_id))
+            .then(res=>{
+                if (res.data.success){
+                    this.questions.splice(index,1);
+                    this.$toastr.s('success','Question is deleted');
+                    window.location.reload();
                 }
             })
         }
