@@ -73,6 +73,12 @@ class QuestionController extends Controller
         return response()->json(['success'=>true]);
     }
 
+    public function setFixed(Request $request){
+        $id = $request->id;
+        Question::where('id',$id)->update(['is_fixed'=>true]);
+        return response()->json(['success'=>true]);
+    }
+
     public function questionDetail($slug){
         $question = Question::where('slug',$slug)->with('comment.user','like','questionTag')->first();
         $question->is_like = $this->getLikeDetails($question->id)['is_like'];

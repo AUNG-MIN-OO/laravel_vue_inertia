@@ -11,11 +11,15 @@
                     </span>
             <div class="card mb-3" v-for="(question,index) in questions" :key="question.id">
                 <div class="card-header">
-                    <span class="font-weight-bolder text-capitalize badge badge-danger" v-if="question.is_fixed">need fixed!</span>
+                    <span class="font-weight-bolder text-capitalize badge badge-danger" v-if="question.is_fixed == 'false'">need fixed!</span>
                     <span class="font-weight-bolder text-capitalize badge badge-success" v-else>fixed!</span>
                     <span class="">{{ question.title }}</span>
                     <a href="" class="badge badge-danger p-1 float-right"><i class="fas fa-trash-alt"></i></a>
-                    <a href="" class="badge badge-success p-1 float-right mr-2"  v-show="isOwn(question.user_id)"><i class="fas fa-check"></i></a>
+                    <span @click="setFixed(index,question.id)"
+                          class="badge badge-success p-1 float-right mr-2"
+                          v-show="isOwn(question.user_id) && question.is_fixed == 'false'">
+                        <i class="fas fa-check"></i>
+                    </span>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -102,6 +106,18 @@ export default {
             }else{
                 return  false;
             }
+        },
+
+        setFixed(index, q_id){
+            var data = new FormData();
+            data.append('id',q_id);
+            axios.post('/question/set/fix',data)
+            .then(res=>{
+                if (res.data.success){
+                    this.questions[index].is_fixed = 'true'
+                    this.$toastr.s('success',"Question si fixed!")
+                }
+            })
         }
     },
 }

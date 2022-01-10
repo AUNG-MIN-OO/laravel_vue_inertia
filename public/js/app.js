@@ -2538,6 +2538,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -2579,6 +2583,19 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         return false;
       }
+    },
+    setFixed: function setFixed(index, q_id) {
+      var _this2 = this;
+
+      var data = new FormData();
+      data.append('id', q_id);
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post('/question/set/fix', data).then(function (res) {
+        if (res.data.success) {
+          _this2.questions[index].is_fixed = 'true';
+
+          _this2.$toastr.s('success', "Question si fixed!");
+        }
+      });
     }
   }
 });
@@ -11697,7 +11714,7 @@ var render = function () {
         _vm._l(_vm.questions, function (question, index) {
           return _c("div", { key: question.id, staticClass: "card mb-3" }, [
             _c("div", { staticClass: "card-header" }, [
-              question.is_fixed
+              question.is_fixed == "false"
                 ? _c(
                     "span",
                     {
@@ -11727,18 +11744,25 @@ var render = function () {
               ),
               _vm._v(" "),
               _c(
-                "a",
+                "span",
                 {
                   directives: [
                     {
                       name: "show",
                       rawName: "v-show",
-                      value: _vm.isOwn(question.user_id),
-                      expression: "isOwn(question.user_id)",
+                      value:
+                        _vm.isOwn(question.user_id) &&
+                        question.is_fixed == "false",
+                      expression:
+                        "isOwn(question.user_id) && question.is_fixed == 'false'",
                     },
                   ],
                   staticClass: "badge badge-success p-1 float-right mr-2",
-                  attrs: { href: "" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.setFixed(index, question.id)
+                    },
+                  },
                 },
                 [_c("i", { staticClass: "fas fa-check" })]
               ),
