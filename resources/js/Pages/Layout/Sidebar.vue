@@ -7,7 +7,7 @@
                 <div class="card-body">
                     <ul class="list-group">
                         <li class="list-group-item" v-for="tag in tags" :key="tag.id">
-                            <inertia-link href="">{{tag.name}}</inertia-link>
+                            <inertia-link :href="'/?tag='+tag.slug">{{tag.name}}</inertia-link>
                         </li>
                     </ul>
                 </div>

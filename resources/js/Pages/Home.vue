@@ -9,7 +9,7 @@
                             <i class="fas fa-arrow-up"></i>
                         </div>
                     </span>
-            <div class="card mb-3" v-for="(question,index) in $page.props.questions.data" :key="question.id">
+            <div class="card mb-3" v-for="(question,index) in questions" :key="question.id">
                 <div class="card-header">
                     <span class="font-weight-bolder text-capitalize badge badge-danger" v-if="question.is_fixed">need fixed!</span>
                     <span class="font-weight-bolder text-capitalize badge badge-success" v-else>fixed!</span>
@@ -78,7 +78,7 @@ export default {
         }
     },
     created() {
-        this.questions = this.$page.props.questions;
+        this.questions = this.$page.props.questions.data;
         if (this.$page.props.flash.success){
             this.$toastr.s('success',this.$page.props.flash.success)
         }

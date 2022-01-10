@@ -2553,7 +2553,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.questions = this.$page.props.questions;
+    this.questions = this.$page.props.questions.data;
 
     if (this.$page.props.flash.success) {
       this.$toastr.s('success', this.$page.props.flash.success);
@@ -11694,7 +11694,7 @@ var render = function () {
           ]),
         ]),
         _vm._v(" "),
-        _vm._l(_vm.$page.props.questions.data, function (question, index) {
+        _vm._l(_vm.questions, function (question, index) {
           return _c("div", { key: question.id, staticClass: "card mb-3" }, [
             _c("div", { staticClass: "card-header" }, [
               question.is_fixed
@@ -12170,9 +12170,11 @@ var render = function () {
                     "li",
                     { key: tag.id, staticClass: "list-group-item" },
                     [
-                      _c("inertia-link", { attrs: { href: "" } }, [
-                        _vm._v(_vm._s(tag.name)),
-                      ]),
+                      _c(
+                        "inertia-link",
+                        { attrs: { href: "/?tag=" + tag.slug } },
+                        [_vm._v(_vm._s(tag.name))]
+                      ),
                     ],
                     1
                   )

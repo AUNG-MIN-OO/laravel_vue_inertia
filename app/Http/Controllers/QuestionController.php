@@ -6,6 +6,7 @@ use App\Models\Question;
 use App\Models\QuestionComment;
 use App\Models\QuestionLike;
 use App\Models\QuestionTag;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,8 +17,12 @@ use App\Traits\Questions as QuestionTraits;
 class QuestionController extends Controller
 {
     use QuestionTraits;
-    public function home(){
-        $questions = Question::with('comment','questionTag','questionSave')->orderBy('id','DESC')->paginate(2);
+    public function home(Request $request){
+        if ($slug = $request->tag){
+            $questions = Tag::where('slug',$slug)->first()->question()->with('comment','questionTag','questionSave')->orderBy('id','DESC')->paginate(2);
+        }else{
+            $questions = Question::with('comment','questionTag','questionSave')->orderBy('id','DESC')->paginate(2);
+        }
         foreach ($questions as $key=>$value){
             $questions[$key]->is_like = $this->getLikeDetails($value->id)['is_like'];
             $questions[$key]->like_count = $this->getLikeDetails($value->id)['like_count'];
