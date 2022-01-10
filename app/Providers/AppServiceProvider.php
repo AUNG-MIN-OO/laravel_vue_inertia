@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Tag;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
@@ -27,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Paginator::useBootstrap();
+
         Inertia::share([
             'errors' => function () {
                 return Session::get('errors')

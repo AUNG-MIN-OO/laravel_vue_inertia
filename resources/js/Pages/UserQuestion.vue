@@ -1,27 +1,30 @@
 <template>
     <Master>
-        <div class="card">
-            <div class="card-body" v-for="(q,index) in questions" :key="q.id">
-                <span>{{q.title}}</span>
+        <div class="card mb-3" v-for="(q,index) in questions" :key="q.id">
+            <div class="card-body">
+                <inertia-link :href="route('question.detail',q.slug)">{{q.title}}</inertia-link>
                 <i class="fas fa-trash-alt text-danger float-right" @click="deleteQuestion(index,q.id)"></i>
             </div>
         </div>
+        <Pagination></Pagination>
+
     </Master>
 </template>
 
 <script>
 import Master from "./Layout/Master";
 import axios from "axios";
+import Pagination from "./Component/Pagination";
 export default {
 name: "UserQuestion",
-    components: {Master},
+    components: {Pagination, Master},
     data() {
         return {
             questions: []
         }
     },
     created() {
-        this.questions = this.$page.props.questions;
+        this.questions = this.$page.props.questions.data;
     },
     methods: {
         deleteQuestion(index, q_id) {

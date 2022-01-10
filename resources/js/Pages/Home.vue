@@ -9,7 +9,7 @@
                             <i class="fas fa-arrow-up"></i>
                         </div>
                     </span>
-            <div class="card mb-3" v-for="(question,index) in $page.props.questions" :key="question.id">
+            <div class="card mb-3" v-for="(question,index) in $page.props.questions.data" :key="question.id">
                 <div class="card-header">
                     <span class="font-weight-bolder text-capitalize badge badge-danger" v-if="question.is_fixed">need fixed!</span>
                     <span class="font-weight-bolder text-capitalize badge badge-success" v-else>fixed!</span>
@@ -60,6 +60,7 @@
                     </div>
                 </div>
             </div>
+            <Pagination></Pagination>
         </div>
     </Master>
 </template>
@@ -67,9 +68,10 @@
 <script>
 import axios from  "axios";
 import Master from "./Layout/Master";
+import Pagination from "./Component/Pagination";
 export default {
     name: "Home",
-    components: {Master},
+    components: {Pagination, Master},
     data() {
         return {
             questions: ""

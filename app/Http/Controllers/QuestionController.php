@@ -17,7 +17,7 @@ class QuestionController extends Controller
 {
     use QuestionTraits;
     public function home(){
-        $questions = Question::with('comment','questionTag','questionSave')->get();
+        $questions = Question::with('comment','questionTag','questionSave')->orderBy('id','DESC')->paginate(2);
         foreach ($questions as $key=>$value){
             $questions[$key]->is_like = $this->getLikeDetails($value->id)['is_like'];
             $questions[$key]->like_count = $this->getLikeDetails($value->id)['like_count'];
@@ -76,8 +76,8 @@ class QuestionController extends Controller
     }
 
     public function userQuestion(){
-        $user = User::findOrFail(Auth::user()->id);
-        $question = $user->question;
+        $user = User::find(Auth::user()->id)->id;
+        $question = Question::where('user_id',$user)->paginate(5);
         return Inertia::render('UserQuestion',['questions'=>$question]);
     }
 
