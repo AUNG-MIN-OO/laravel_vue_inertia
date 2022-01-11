@@ -24,6 +24,9 @@
                         <li class="list-group-item">
                             <inertia-link href="/profile/question/user"><i class="fas fa-question mr-3"></i>My Questions</inertia-link>
                         </li>
+                        <li class="list-group-item">
+                            <inertia-link href="/profile/question/saved"><i class="fas fa-question-circle mr-3"></i>Saved Questions</inertia-link>
+                        </li>
                     </ul>
                 </div>
             </div>

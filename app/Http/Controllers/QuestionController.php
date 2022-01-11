@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Question;
 use App\Models\QuestionComment;
 use App\Models\QuestionLike;
+use App\Models\QuestionSave;
 use App\Models\QuestionTag;
 use App\Models\Tag;
 use App\Models\User;
@@ -37,7 +38,9 @@ class QuestionController extends Controller
         foreach ($questions as $key=>$value){
             $questions[$key]->is_like = $this->getLikeDetails($value->id)['is_like'];
             $questions[$key]->like_count = $this->getLikeDetails($value->id)['like_count'];
+            $questions[$key]->is_save = $this->getSaveDetails($value->id)['is_save'];
         }
+
         return Inertia::render('Home',['questions'=>$questions]);
     }
 
@@ -46,15 +49,6 @@ class QuestionController extends Controller
     }
 
     public function storeQuestion(Request $request){
-//        $a=array();
-//        for($i=0; $i<strlen($request->tags); $i++)
-//            $a[$i] = $request->tags[$i];
-//        foreach ($a as $b){
-//            if ($b != ','){
-//                return true;
-//            }
-//        }
-//        die();
 
         $question = Question::create([
             'user_id' => Auth::user()->id,
@@ -95,6 +89,26 @@ class QuestionController extends Controller
         $question->is_like = $this->getLikeDetails($question->id)['is_like'];
         $question->like_count = $this->getLikeDetails($question->id)['like_count'];
         return Inertia::render('QuestionDetail',['question'=>$question]);
+    }
+
+    public function saveQuestion($id){
+        QuestionSave::create([
+            'question_id' => $id,
+            'user_id' => Auth::user()->id,
+        ]);
+
+        return response()->json(['success'=>true]);
+    }
+
+    public function showSavedQuestion(){
+        $questions = QuestionSave::where('user_id',Auth::id())->with('question')->orderBy('id','DESC')->paginate(2);
+        return Inertia::render('SavedQuestion',['questions'=>$questions]);
+    }
+
+    public function removeSavedQuestion($id){
+        $question = QuestionSave::where('question_id',$id)->delete();
+
+        return response()->json(['success'=>true]);
     }
 
     public function userQuestion(){

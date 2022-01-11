@@ -9,5 +9,9 @@ class QuestionSave extends Model
 {
     use HasFactory;
     protected $fillable = ['question_id','user_id'];
+
+    public function question(){
+        return $this->belongsTo(Question::class);
+    }
 }
 

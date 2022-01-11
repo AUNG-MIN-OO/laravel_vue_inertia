@@ -51,4 +51,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(QuestionComment::class,'user_id');
     }
+
+    public function QuestionSaved(){
+        return $this->hasMany(QuestionSave::class,'id');
+    }
 }

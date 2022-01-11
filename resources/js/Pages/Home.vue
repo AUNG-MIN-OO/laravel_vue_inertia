@@ -49,7 +49,8 @@
                                     <small>{{ question.comment.length }}</small>
                                 </div>
                                 <div class="">
-                                    <i class="fas fa-save text-success mt-1 "></i>
+                                    <i class="far fa-save mt-1" v-show="question.is_save == 'false'" @click="saveQuestion(index,question.id)"></i>
+                                    <i class="fas fa-save text-success mt-1" v-show="question.is_save == 'true'"></i>
                                 </div>
                             </div>
                         </div>
@@ -131,6 +132,16 @@ export default {
                     this.questions.splice(index,1);
                     this.$toastr.s('success','Question is deleted');
                     window.location.reload();
+                }
+            })
+        },
+
+        saveQuestion(index, q_id){
+            axios.get(this.route('question.save',q_id))
+            .then(res=>{
+                if (res.data.success){
+                    this.questions[index].is_save = 'true'
+                    this.$toastr.s('success','Question is saved!');
                 }
             })
         }
